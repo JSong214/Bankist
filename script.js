@@ -10,6 +10,7 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const navLink = document.querySelector('.nav__links');
+const h1 = document.querySelector('h1');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -44,4 +45,31 @@ navLink.addEventListener('click', function (e) {
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
+});
+
+// children
+h1.firstElementChild.style.color = 'white';
+
+const tab = document.querySelectorAll('.operations__tab');
+
+//选项卡
+const operationsTab = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const operationsContent = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const click = e.target.closest('.operations__tab');
+  if (!click) return;
+
+  // 清除active
+  operationsTab.forEach(t => t.classList.remove('operations__tab--active'));
+  operationsContent.forEach(c =>
+    c.classList.remove('operations__content--active')
+  );
+
+  // 添加 active
+  click.classList.add('operations__tab--active');
+  document
+    .querySelector(`.operations__content--${click.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
