@@ -11,6 +11,7 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const navLink = document.querySelector('.nav__links');
 const h1 = document.querySelector('h1');
+const nav = document.querySelector('.nav');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -73,3 +74,41 @@ tabContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${click.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// nav半透明效果
+const handleHover = function (o) {
+  return function (e) {
+    if (e.target.classList.contains('nav__link')) {
+      const checked = e.target;
+      const siblings = checked.closest('.nav').querySelectorAll('.nav__link');
+      const logo = checked.closest('.nav').querySelector('img');
+      siblings.forEach(el => {
+        if (el !== checked) el.style.opacity = o;
+      });
+      logo.style.opacity = o;
+    }
+  };
+};
+navLink.addEventListener('mouseover', handleHover(0.5));
+navLink.addEventListener('mouseout', handleHover(1));
+
+// Sticky navigation: Intersection Observer API
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(nav);
